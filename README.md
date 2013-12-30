@@ -2,7 +2,7 @@
 
 ### [Rules](http://www.bitstorm.org/gameoflife/)
 
-Each cell has 8 neighboors
+Each cell has 8 neighbors
 
     +-----------+
     |   |   |   |
@@ -12,19 +12,43 @@ Each cell has 8 neighboors
     |   |   |   |
     +-----------+
 
-**For a space that is 'populated'**:
+1. A populated cell with 0 or 1 neighbors dies
+1. A populated cell with 4, 5, 6, 7, or 8 neighbors dies
+1. A populated cell with 2 or 3 neighbors survives
+1. An unpopulated cell with 3 neighbors is born
 
-* Each cell with one or no neighbors dies, as if by loneliness.
-* Each cell with four or more neighbors dies, as if by overpopulation.
-* Each cell with two or three neighbors survives.
+### Structure
 
-**For a space that is 'empty' or 'unpopulated'**:
+#### Board
 
-* Each cell with three neighbors becomes populated.
+A board is a set of rows and columns populated with cells and printed to SDOUT.
+The board is redrawn with each iteration of the game and cells are turned on or off based on their adjoining neighbors.
 
-### How it works
+##### Instance variables
 
-1. A populated cell with 0 or 1 dies
-1. A populated cell with 4, 5, 6, 7, or 8 dies
-1. A populated cell with 2 or 3 survives
-1. An unpopulated cell with 3 is born
+1. `size` [rows, columns]. An array or rows and columns. e.g. [100, 200]. 
+1. `fps` integer. The number of frames per second
+1. `population`. You may pre populate the board if you like, otherwise the board is populated by random.
+
+#### Cell
+
+A cell is a single point on the board.
+A cell is `alive` or `dead` based on the number of adjoining neighbors.
+
+##### Instance variables
+
+1. `row` Integer. The row of the cell
+1. `column` Integer. The column of the cell
+1. `alive` Boolean. The current state of the cell. `true` if the cell is alive, or `false` if the cell is dead
+
+##### Methods
+
+1. `alive=` Boolean. Assign the state of the cell
+1. `alive?` Boolean. The next state of the cell.  `true` if the cell should be alive, or `false` if the cell should be dead
+
+##### Private Methods
+
+1. `lonely?` Boolean. `true` if the cell should die from loneliness, or `false` if the cell should remain alive
+1. `crowded?` Boolean. `true` if the cell should die from overpopulation, or `false` if the cell should remain alive
+1. `sustained?` Boolean. `true` if the cell should remain alive, or `false` if the cell should die
+1. `lush?` Boolean. `true` if the cell should live, or `false` if the cell should remain dormant
