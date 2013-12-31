@@ -43,4 +43,26 @@ describe Board do
       @board.cells.first.count.should eq(@board.columns)
     end
   end
+
+  it "creates a 3x3 board with a vertically centered blinker" do
+    # +-----------+
+    # |   |   |   |
+    # +-----------+
+    # | X | X | X |
+    # +-----------+
+    # |   |   |   |
+    # +-----------+
+    
+    board = Board.new [3,3], [[0,0,0], [1,1,1], [0,0,0]]
+    board.cells.each_with_index do |row, i|
+      row.each_with_index do |cell, j|
+        case i
+        when 1
+          cell.alive.should eq(true)
+        else
+          cell.alive.should eq(false)
+        end
+      end
+    end
+  end
 end
