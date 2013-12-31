@@ -1,10 +1,11 @@
 require 'cell'
 
 class Board
-  attr_accessor :size, :cells
+  attr_accessor :size, :cells, :population
 
-  def initialize size = [80, 100]
+  def initialize(size = [80, 100], population = [])
     @size = size
+    @population = population
     populate
   end
 
@@ -17,12 +18,16 @@ class Board
   end
 
   private
+    def lookup row, column
+      @population[row][column] unless @population[row].nil?
+    end
+
     def populate
       @cells = []
-      rows.times do
+      rows.times do |i|
         _row = []
-        columns.times do
-          _row << Cell.new
+        columns.times do |j|
+          _row << Cell.new(lookup(i, j))
         end
         @cells << _row
       end
