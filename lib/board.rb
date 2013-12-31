@@ -3,13 +3,8 @@ require 'cell'
 class Board
   attr_accessor :size, :cells
 
-  def initialize args = {}
-    defaults = {
-      size: [80, 100],
-    }
-    defaults.merge(args).each do |k, v|
-      instance_variable_set( "@#{k}", v )
-    end
+  def initialize size = [80, 100]
+    @size = size
     populate
   end
 

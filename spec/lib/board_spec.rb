@@ -27,7 +27,7 @@ describe Board do
 
       it "should accept custom board dimensions" do
         custom_dimensions = [1200, 300]
-        @board2 = Board.new( size: custom_dimensions )
+        @board2 = Board.new( custom_dimensions )
         @board2.size.should eq(custom_dimensions)
       end
     end
