@@ -3,7 +3,7 @@ require 'board'
 
 describe Board do
   context "Default variables" do
-    before(:each) { @board = FactoryGirl.build(:board) }
+    before(:each) { @board = Board.new }
 
     context "size" do
       it "should have a default size array" do
