@@ -2,7 +2,7 @@
 
 ### [Rules](http://www.bitstorm.org/gameoflife/)
 
-Each cell has 8 neighboors
+Each cell has 8 neighbors
 
     +-----------+
     |   |   |   |
@@ -12,19 +12,27 @@ Each cell has 8 neighboors
     |   |   |   |
     +-----------+
 
-**For a space that is 'populated'**:
+1. A populated cell with 0 or 1 neighbors dies
+1. A populated cell with 4, 5, 6, 7, or 8 neighbors dies
+1. A populated cell with 2 or 3 neighbors survives
+1. An unpopulated cell with 3 neighbors is born
 
-* Each cell with one or no neighbors dies, as if by loneliness.
-* Each cell with four or more neighbors dies, as if by overpopulation.
-* Each cell with two or three neighbors survives.
+### Structure
 
-**For a space that is 'empty' or 'unpopulated'**:
+#### Board
 
-* Each cell with three neighbors becomes populated.
+A board is a set of rows and columns populated with cells.
+The board is redrawn with each iteration of the game and cells are turned on or off based on their adjoining neighbors.
 
-### How it works
+#### Cell
 
-1. A populated cell with 0 or 1 dies
-1. A populated cell with 4, 5, 6, 7, or 8 dies
-1. A populated cell with 2 or 3 survives
-1. An unpopulated cell with 3 is born
+A cell is a single point on the board.
+A cell is `alive?` based on the number of adjoining neighbors.
+
+#### Screen
+
+The screen draws the cells on the board.
+
+#### Automaton
+
+Scans the cells and sets the cell state.
