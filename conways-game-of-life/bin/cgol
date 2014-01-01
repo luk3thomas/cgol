@@ -105,8 +105,8 @@ gun = [
 
 random = (40).times.map{ (40).times.map{ rand.round } }
 
-board = Board.new( [30, 80], gun )
+board = Board.new( options[:size], eval(options[:type]) )
 automaton = Automaton.new board
 screen = Screen.new board
 
-game = Game.new screen, automaton, 1000, 200
+game = Game.new screen, automaton, options[:iterations], options[:frames_per_second]
