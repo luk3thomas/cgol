@@ -1,5 +1,9 @@
 ## Conway's Game of Life
 
+To run the game:
+
+    $ make
+
 ### [Rules](http://www.bitstorm.org/gameoflife/)
 
 Each cell has 8 neighbors
