@@ -1,11 +1,48 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+
 require_relative  '../lib/cell'
 require_relative  '../lib/board'
 require_relative  '../lib/automaton'
 require_relative  '../lib/screen'
 require_relative  '../lib/game'
 
+options = {
+  type: "random",
+  iterations: 1000,
+  frames_per_second: 60,
+  size: [40, 40]
+}
+
+OptionParser.new do |opts|
+  opts.banner = "Conway's Game of Life: [options]"
+
+  # Size of the board
+  opts.on('-s', '--size [rows, columns]', "The size of the board e.g. [30, 50] ") do |o|
+    options[:size] = o.split(',').map(&:to_i)
+  end
+
+  # Frames per second
+  opts.on('-f', '--frames [Integer]', "The frames per second") do |o|
+    options[:frames_per_second] = o.to_i
+  end
+
+  # Type of board
+  opts.on('-t', '--type [String]', "Choices are: random, glider, spaceship, pulsar, gun") do |o|
+    options[:type] = o
+  end
+
+  # Iterations
+  opts.on('-i', '--iterations [Integer]', "Number of iterations until the game is terminated") do |o|
+    options[:iterations] = o
+  end
+
+  opts.on('-h', '--help', "show options") do 
+    puts opts
+    exit
+  end
+end.parse!
 
 glider = [
   [0, 0, 0, 0, 0] ,
