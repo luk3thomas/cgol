@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
-require './lib/cell'
-require './lib/board'
-require './lib/automaton'
-require './lib/screen'
+require_relative  '../lib/cell'
+require_relative  '../lib/board'
+require_relative  '../lib/automaton'
+require_relative  '../lib/screen'
+require_relative  '../lib/game'
 
 row = (40).times.map{ rand.round }.shuffle
 filler = (40).times.map{ row.shuffle }
