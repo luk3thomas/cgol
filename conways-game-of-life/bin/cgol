@@ -103,7 +103,7 @@ gun = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] ,
 ]
 
-random = (40).times.map{ (40).times.map{ rand.round } }
+random = (options[:size].first).times.map{ (options[:size].last).times.map{ rand.round } }
 
 board = Board.new( options[:size], eval(options[:type]) )
 automaton = Automaton.new board
