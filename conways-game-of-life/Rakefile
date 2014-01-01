@@ -1,0 +1,14 @@
+desc "Run all tests"
+task :test do
+  system('bundle exec rspec')
+end
+
+desc "Run all tests and then watch for changes"
+task :testw do
+  system('bundle exec guard')
+end
+
+desc "Random"
+task :run do
+  system('./bin/cgol -t random -s 40,80')
+end
