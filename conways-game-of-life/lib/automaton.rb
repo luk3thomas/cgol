@@ -32,7 +32,7 @@ class Automaton
 
   def find_neighbors coords
     row, column = coords
-    arr = [
+    [
       [row - 1, column - 1] ,
       [row - 1, column - 0] ,
       [row - 1, column + 1] ,
@@ -41,8 +41,14 @@ class Automaton
       [row + 1, column - 1] ,
       [row + 1, column - 0] ,
       [row + 1, column + 1] ,
-    ]
-    within_bounds(coords) ? arr.select {|c| within_bounds(c) } : []
+    ].map do |c|
+      row, col = c
+      row = @board.rows - 1 if row < 0
+      row = 0 if row >= @board.rows
+      col = @board.columns - 1 if col < 0
+      col = 0 if col >= @board.columns
+      [row, col]
+    end
   end
 
   def lonely? neighbors
@@ -65,10 +71,5 @@ class Automaton
 
     def occupied neighbors
       neighbors.map{|n| n.alive || nil }.compact.size
-    end
-
-    def within_bounds coords
-      row, column = coords
-      (row >= 0 && row < @board.rows) && (column >= 0 && column < @board.columns)
     end
 end
