@@ -26,7 +26,7 @@ namespace :game do
 
   desc "A pulsar"
   task :pulsar do
-    system('./bin/cgol -t pulsar -f 5')
+    system('./bin/cgol -t pulsar -f 5 -s 18,18')
   end
 
   desc "A spaceship"
