@@ -1,8 +1,16 @@
 ## Conway's Game of Life
 
-To run the game:
+Use the binary to run the game. See the `help` for all options
 
-    $ make
+    $ ./bin/cgol
+    $ ./bin/cgol --help
+
+You can also start the game with `rake run`. I've saved a few common scenarios in the Rakefile.
+    
+    $ rake game:glider
+    $ rake game:gun
+    $ rake game:pulsar
+    $ rake game:spaceship
 
 ### [Rules](http://www.bitstorm.org/gameoflife/)
 
