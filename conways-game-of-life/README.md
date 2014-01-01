@@ -24,6 +24,8 @@ Each cell has 8 neighbors
     |   |   |   |
     +-----------+
 
+Upon each iteration
+
 1. A populated cell with 0 or 1 neighbors dies
 1. A populated cell with 4, 5, 6, 7, or 8 neighbors dies
 1. A populated cell with 2 or 3 neighbors survives
@@ -39,7 +41,7 @@ The board is redrawn with each iteration of the game and cells are turned on or 
 #### Cell
 
 A cell is a single point on the board.
-A cell is `alive?` based on the number of adjoining neighbors.
+A cell is `alive?` based on the number of adjoining living neighbors.
 
 #### Screen
 
