@@ -1,0 +1,36 @@
+desc "Run all tests"
+task :test do
+  system('bundle exec rspec')
+end
+
+desc "Run all tests and then watch for changes"
+task :testw do
+  system('bundle exec guard')
+end
+
+desc "Random"
+task :run do
+  system('./bin/cgol -t random -s 40,80')
+end
+
+namespace :game do
+  desc "A single glider"
+  task :glider do
+    system('./bin/cgol -t glider -f 5 -s 20,40')
+  end
+
+  desc "A gun"
+  task :gun do
+    system('./bin/cgol -t gun -s 30,80')
+  end
+
+  desc "A pulsar"
+  task :pulsar do
+    system('./bin/cgol -t pulsar -f 5 -s 18,18')
+  end
+
+  desc "A spaceship"
+  task :spaceship do
+    system('./bin/cgol -t spaceship -f 5 -s 20,80')
+  end
+end

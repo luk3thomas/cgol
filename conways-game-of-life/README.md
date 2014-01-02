@@ -1,16 +1,26 @@
 ## Conway's Game of Life
 
+Use the binary to run the game. See the `help` for all options
+
+    $ ./bin/cgol
+    $ ./bin/cgol --help
+
+You can also start the game with `rake run`. I've saved a few common scenarios in the Rakefile.
+    
+    $ rake game:glider
+    $ rake game:gun
+    $ rake game:pulsar
+    $ rake game:spaceship
+
 ### [Rules](http://www.bitstorm.org/gameoflife/)
 
 Each cell has 8 neighbors
 
-    +-----------+
-    |   |   |   |
-    +-----------+
-    |   | X |   |
-    +-----------+
-    |   |   |   |
-    +-----------+
+    .  .  .
+    .  x  .
+    .  .  .
+
+Upon each iteration
 
 1. A populated cell with 0 or 1 neighbors dies
 1. A populated cell with 4, 5, 6, 7, or 8 neighbors dies
@@ -27,7 +37,7 @@ The board is redrawn with each iteration of the game and cells are turned on or 
 #### Cell
 
 A cell is a single point on the board.
-A cell is `alive?` based on the number of adjoining neighbors.
+A cell is `alive?` based on the number of adjoining living neighbors.
 
 #### Screen
 
