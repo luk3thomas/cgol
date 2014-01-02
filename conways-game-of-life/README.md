@@ -16,13 +16,9 @@ You can also start the game with `rake run`. I've saved a few common scenarios i
 
 Each cell has 8 neighbors
 
-    +-----------+
-    |   |   |   |
-    +-----------+
-    |   | X |   |
-    +-----------+
-    |   |   |   |
-    +-----------+
+    .  .  .
+    .  x  .
+    .  .  .
 
 Upon each iteration
 
