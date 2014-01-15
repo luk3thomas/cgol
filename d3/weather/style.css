@@ -1,0 +1,24 @@
+body {
+  font: 16px/1.5 helvetica, sans-serif;
+  text-align:center;
+}
+
+#pie {
+  font-size:11px;
+}
+
+.line {
+  fill:none;
+  stroke:#000;
+}
+
+.axis path ,
+.axis .line {
+  fill:none;
+  stroke:#000;
+  shape-rendering: crispEdges;
+}
+
+#pie svg {
+  padding:30px;
+}
