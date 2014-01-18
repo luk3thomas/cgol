@@ -1,6 +1,18 @@
 body {
-  font: 16px/1.5 helvetica, sans-serif;
+  font: 13px/1.5 helvetica, sans-serif;
   text-align:center;
+}
+
+h1 {
+  font-size:4em;
+}
+
+#links {
+  padding:0 0 4em;
+}
+
+#links a {
+  padding:0 1em;
 }
 
 #pie {

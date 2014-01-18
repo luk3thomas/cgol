@@ -31,6 +31,7 @@ var Graph = function() {
     var line = d3.svg.line()
         .x(function(d){ return x(d.CST) })
         .y(function(d){ return y(d['Mean TemperatureF']) })
+        .interpolate('basis')
 
     // Guts
 
@@ -40,9 +41,48 @@ var Graph = function() {
 
     this.init = function() {
         this.e.subscribe( 'load', this.getData );
-        this.e.subscribe( 'data', this.draw );
+        this.e.subscribe( 'store', this.store );
+        this.e.subscribe( 'store', this.createLinks );
+        this.e.subscribe( 'listen', this.listen );
+        this.e.subscribe( 'setYear', this.setYear );
+        this.e.subscribe( 'update', this.update );
+        this.e.subscribe( 'draw', this.draw );
 
         this.e.publish( 'load' );
+    };
+
+    this.listen = function() {
+        var links = document.querySelectorAll('a');
+        _.each( links, function(l) {
+            l.addEventListener( 'click', function() {
+                self.e.publish( 'setYear', [ +this.innerHTML ] )
+            });
+        })
+    };
+
+    this.setYear = function( year ) {
+        var days = _.filter( self.data, function(d) {
+            return d.CST.getFullYear() == year;
+        });
+        self.e.publish( 'update', [ days ] );
+    };
+
+    this.createLinks = function( data ) {
+        var links = _.chain(data)
+            .map( function(d) { return d.CST.getFullYear() } )
+            .uniq()
+            .map( function(d) { return '<a class="year" href="#">' + d + '</a>' } )
+            .value();
+
+        var div = document.getElementById('links');
+        div.innerHTML = links.join('');
+
+        self.e.publish( 'listen' );
+    };
+
+    this.store = function( data ) {
+        self.data = data;
+        self.e.publish( 'draw', [ data ] );
     };
 
     this.getData = function() {
@@ -52,8 +92,22 @@ var Graph = function() {
                 d['Mean TemperatureF'] = +d['Mean TemperatureF'];
             });
 
-            self.e.publish( 'data', [ data ] );
+            self.e.publish( 'store', [ data ] );
         })
+    };
+
+    this.update = function( data ) {
+        x.domain(d3.extent( data, function(d) { return d.CST } ));
+        console.log(d3.extent( data, function(d) { return d.CST } ));
+
+        svg.select('.x.axis')
+            .transition()
+            .call(xAxis);
+
+        svg.select('.line')
+            .datum(data)
+            .transition()
+            .attr('d', line)
     };
 
     this.draw = function( data ) {
