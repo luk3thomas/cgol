@@ -19,18 +19,23 @@ h1 {
   font-size:11px;
 }
 
-.line {
-  fill:none;
-  stroke:#000;
-}
 
 .axis path ,
 .axis .line {
   fill:none;
-  stroke:#000;
+  stroke:#ddd;
   shape-rendering: crispEdges;
 }
 
 #pie svg {
   padding:30px;
+}
+
+.blueGradient1 {
+    stop-color:#3498db;
+    color:#A3B6CC;
+}
+.blueGradient2 {
+    stop-color:#2980b9;
+    stop-opacity:.4;
 }

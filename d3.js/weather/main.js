@@ -28,10 +28,29 @@ var Graph = function() {
         .scale(y)
         .orient('left');
 
-    var line = d3.svg.line()
+    var line = d3.svg.area()
         .x(function(d){ return x(d.CST) })
         .y(function(d){ return y(d['Mean TemperatureF']) })
-        .interpolate('basis')
+        .y0(height)
+        .interpolate('basis');
+
+    var defs = d3.select('svg').append('defs');
+
+    // Add gradients
+    var gradient1 = defs.append('linearGradient')
+        .attr('id', 'gradient1')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '0%')
+        .attr('y2', '100%');
+
+    gradient1.append('stop')
+        .attr('class', 'blueGradient1')
+        .attr('offset', '0%');
+
+    gradient1.append('stop')
+        .attr('class', 'blueGradient2')
+        .attr('offset', '100%');
 
     // Guts
 
@@ -126,6 +145,7 @@ var Graph = function() {
         svg.append('path')
             .datum(data)
             .attr('class', 'line')
+            .attr('fill', 'url(#gradient1)')
             .attr('d', line)
     };
 
