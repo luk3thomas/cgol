@@ -1,0 +1,202 @@
+// version 0.0.2
+var Eventer = function() {
+
+    if( !(this instanceof Eventer) ) {
+        return new Eventer();
+    }
+
+    cache = {};
+
+    this.publish = function(topic, args){
+
+        if(typeof cache[topic] === 'object') {    
+
+            cache[topic].forEach(function(property){
+                property.apply(this, args || []);
+            });
+        }
+    };
+
+    this.subscribe = function(topic, callback){
+
+        if(!cache[topic]){
+            cache[topic] = [];
+        }
+
+        cache[topic].push(callback);
+
+        return [topic, callback]; 
+    };
+
+    this.unsubscribe = function(topic, fn){
+
+        if( cache[topic] ) {
+
+            cache[topic].forEach(function(element, idx){
+
+                if(element == fn){
+                    cache[topic].splice(idx, 1);
+                }
+            });
+        }
+    };
+
+    this.queue = function() {
+        return cache;
+    };
+
+    // alias
+    this.on      = this.subscribe;
+    this.off     = this.unsubscribe;
+    this.trigger = this.publish;
+
+  return this;
+};
+
+var eventer = new Eventer;
+var margin = 50;
+var width = window.innerWidth - 100,
+    height = window.innerHeight - 300;
+
+var Color = net.brehaut.Color,
+    blue = Color('#3498db'),
+    red = Color('#e74c3c');
+
+var week = d3.time.format('%U');
+
+var InBetween = function( limits ) {
+    var span = limits[1] - limits[0];
+
+    this.init = function() {
+        return function(d) {
+            return (d - limits[0]) / span;
+        }
+    };
+
+    return this.init.apply(this);
+};
+
+var Graph = function() {
+
+    var scale;
+
+    // Setup
+    var parseDate = d3.time.format('%Y-%m-%d').parse;
+    var svg = d3.select('#content')
+        .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+
+    var rectangles = svg.append('g')
+            .attr('class', 'rectangles');
+
+    var defs = svg.append('defs');
+
+    // Add gradients
+    var gradient1 = defs.append('linearGradient')
+        .attr('id', 'gradient1')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '0%')
+        .attr('y2', '100%');
+
+    gradient1.append('stop')
+        .attr('class', 'blueGradient1')
+        .attr('offset', '0%');
+
+    gradient1.append('stop')
+        .attr('class', 'blueGradient2')
+        .attr('offset', '100%');
+
+    // Guts
+
+    var self = this;
+
+    this.e = new Eventer;
+
+    this.init = function() {
+        this.e.subscribe( 'load', this.getData );
+        this.e.subscribe( 'load:finished', this.createLinks );
+        this.e.subscribe( 'load:finished', this.setScale );
+        this.e.subscribe( 'store', this.store );
+        this.e.subscribe( 'listen', this.listen );
+        this.e.subscribe( 'update', this.update );
+        this.e.subscribe( 'draw', this.draw );
+
+        this.e.publish( 'load' );
+    };
+
+    this.createLinks = function(data) {
+        var links = _.chain(data)
+            .map(function(d){ return '<a href="#">' + d.CST.getFullYear() + '</a>' })
+            .uniq()
+            .value();
+        document.getElementById('links').innerHTML = links.join('');
+        self.e.publish( 'listen' );
+    };
+
+    this.setScale = function(data) {
+        scale = new InBetween( d3.extent( data, function(d){ return d['Mean TemperatureF'] }) );
+    };
+
+    this.listen = function() {
+        var links = document.querySelectorAll('a');
+        _.each( links, function(l) {
+            l.addEventListener( 'click', function() {
+                self.e.publish( 'update', [ +this.innerHTML ] )
+            });
+        })
+    };
+
+    this.store = function( data ) {
+        self.data = data;
+        self.e.publish( 'draw', [ _.filter(data, function(o){ return o.CST.getFullYear() == 2013 }) ] );
+    };
+
+    this.getData = function() {
+        d3.csv('data.csv', function(error, data){
+            data.forEach(function(d){
+                d['Mean TemperatureF'] = +d['Mean TemperatureF'];
+                d.CST = parseDate(d.CST);
+                d.week = +week(new Date(d.CST.getFullYear(), d.CST.getMonth(), d.CST.getDate()))
+            });
+
+            self.e.publish( 'load:finished', [ data ] );
+            self.e.publish( 'store', [ data ] );
+        })
+    };
+
+    this.update = function(year) {
+        self.e.publish( 'draw', [ _.filter(self.data, function(d){ return d.CST.getFullYear() == year }) ] );
+    };
+
+    this.draw = function( data ) {
+        var rectangle = rectangles.selectAll('.rectangle')
+            .data(data)
+                
+        rectangle.enter()
+            .append('rect')
+                .attr('opacity', 0);
+
+        rectangle
+            .transition()
+            .delay(function(d, i){ return i + 20 })
+            .attr('class', 'rectangle')
+            .attr('width', '20px')
+            .attr('height', '20px')
+            .attr('opacity', 1 )
+            .attr('x', function(d){ return d.week * 20 })
+            .attr('y', function(d){ return d.CST.getDay() * 20})
+            .attr('fill', function(d){ return blue.blend(red, scale(d['Mean TemperatureF'])); });
+
+        rectangle.exit()
+            .transition()
+            .delay(function(d, i){ return i + 20 })
+            .attr('opacity', 0)
+            .remove();
+    };
+
+    this.init.apply( this, arguments );
+};
+
+new Graph;
