@@ -35,7 +35,9 @@ app.get('/', routes.index);
 app.get('/chat', routes.chat);
 app.get('/users', user.list);
 
-server.listen(app.get('port'));
+server.listen(app.get('port'), function(){
+    console.log('Server listening on %d...', app.get('port'));
+});
 
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
