@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<table id="totals">
+<table id="items">
     <tr>
         <td class="title">Some title</td>
         <td class="price">$10.00</td>
@@ -17,18 +17,20 @@
 <form id="cart">
     <p>
     <label>name</label>
-    <input type='text' name='name' />
+    <input class="name" type='text' name='name' />
     </p>
     <p>
     <label>amount</label>
-    <input type='text' name='amount' />
+    <input class="amount" type='text' name='amount' />
     </p>
     <button>Submit</button>
 </form>
 
 <script type="text/template" id="tpl-item">
-    <td class="title">{{item.title}}</td>
-    <td class="price">{{item.price}}</td>
+    <% _.each(items, function(item){ %>
+        <td class="title">{{item.title}}</td>
+        <td class="price">{{item.price}}</td>
+    <% }) %>
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -38,8 +40,10 @@
 <script>
 
     var Item = Backbone.Model.extend({
+
         initialize: function(){
         },
+
         defaults: {
             name: '',
             price: 0
@@ -50,22 +54,37 @@
         model: Item
     });
 
+    var ItemsView = Backbone.View.extend({
 
-    var ItemView = Backbone.View.extend({
-        tagName: 'tr',
+        tagName: 'table',
 
         tpl: _.template($('#tpl-item').html()),
 
         initialize: function(){
-            this.render();
+            this.listenTo(this.collection, 'change', this.render);
         },
 
         render: function(){
-            this.$el.html(this.tpl({item: this.model}));
+            this.$el.html(this.tpl({items: this.collection.models}));
         }
     });
 
-    var ItemsView = Backbone.View.Extend({
+    // Initialization 
+    var items = new Items();
+
+    var items_view = new ItemsView({
+        collection: items ,
+        el: $('#items')
+    });
+
+    // Listening to changes
+    $('form').submit(function(e){
+        var $form = $(this);
+        e.preventDefault();
+        items.push(new Item({
+            name: $form.find('.name').val(),
+            price: $form.find('.price').val()
+        }))
     });
 
 </script>
