@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table id="totals">
+    <tr>
+        <td class="title">Some title</td>
+        <td class="price">$10.00</td>
+    </tr>
+</table>
+
+<h3>Add more</h3>
+<form id="cart">
+    <p>
+    <label>name</label>
+    <input type='text' name='name' />
+    </p>
+    <p>
+    <label>amount</label>
+    <input type='text' name='amount' />
+    </p>
+    <button>Submit</button>
+</form>
+
+<script type="text/template" id="tpl-item">
+    <td class="title">{{item.title}}</td>
+    <td class="price">{{item.price}}</td>
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+
+<script>
+
+    var Item = Backbone.Model.extend({
+        initialize: function(){
+        },
+        defaults: {
+            name: '',
+            price: 0
+        }
+    });
+
+    var Items = Backbone.Collection.extend({
+        model: Item
+    });
+
+
+    var ItemView = Backbone.View.extend({
+        tagName: 'tr',
+
+        tpl: _.template($('#tpl-item').html()),
+
+        initialize: function(){
+            this.render();
+        },
+
+        render: function(){
+            this.$el.html(this.tpl({item: this.model}));
+        }
+    });
+
+    var ItemsView = Backbone.View.Extend({
+    });
+
+</script>
+
+</body>
+</html>
