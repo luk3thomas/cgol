@@ -3,11 +3,11 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
+var express = require('express')
+    , routes = require('./routes')
+    , user = require('./routes/user')
+    , http = require('http')
+    , path = require('path');
 
 var app = express()
     , server = http.createServer(app)
@@ -40,8 +40,8 @@ server.listen(app.get('port'), function(){
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  socket.emit('chats', { message: 'Welcome to the chatroom!' });
+  socket.on('chat', function (data) {
+    io.sockets.emit('chats', { message: data });
   });
 });

@@ -3,8 +3,9 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  #chatroom.chatroom
 
   form#chat
-    textarea(name='message')
+    textarea#message(name='message')
     button Submit
+
+  #chatroom.chatroom
