@@ -21,11 +21,23 @@ var socket = io.connect('http://localhost');
     });
 
     // Send a chat
-    $('#chat').submit(function(e){
-        e.preventDefault();
-        $textarea = $(this).find('#message');
-        send('chat', $textarea.val());
-        $textarea.val('');
-    });
+    var $chatroom = $('#chatroom'),
+        $chat = $('#chat');
+
+    if($chatroom.length) {
+
+        $(document).on('keypress', function(e){
+            if( e.keyCode == 13 ) {
+                $chat.trigger('submit');
+            }
+        });
+
+        $chat.submit(function(e){
+            e.preventDefault();
+            $textarea = $(this).find('#message');
+            send('chat', $textarea.val());
+            $textarea.val('');
+        });
+    }
 
 })(jQuery);
