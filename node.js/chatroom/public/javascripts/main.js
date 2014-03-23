@@ -10,6 +10,7 @@ var socket = io.connect('http://localhost');
         $('#chatroom').prepend([
             '<p>',
                 '<span class="time">', (new Date).toString().replace(/([0-9]{2}:[0-9]{2}) .*/, '$1'), '</span>',
+                '<span class="name">', data.name , ':</span> ',
                 '<span class="message">', data.message , '</span>',
             '</p>'
         ].join(''))
@@ -34,8 +35,13 @@ var socket = io.connect('http://localhost');
 
         $chat.submit(function(e){
             e.preventDefault();
-            $textarea = $(this).find('#message');
-            send('chat', $textarea.val());
+            var $textarea = $(this).find('#message')
+                , $name = $(this).find('#name');
+
+            send('chat', {
+              message: $textarea.val(),
+              name: $name.val()
+            });
             $textarea.val('');
         });
     }

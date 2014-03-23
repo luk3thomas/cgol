@@ -5,7 +5,12 @@ block content
   p Welcome to #{title}
 
   form#chat
-    textarea#message(name='message')
-    button Submit
+    p
+      input#name(name='name' placeholder='Your name...')
+    p
+      label Chat
+      textarea#message(name='message')
+    p
+      button Submit
 
   #chatroom.chatroom
