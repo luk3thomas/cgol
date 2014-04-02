@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Luke Thomas",
+        "company": "",
+        "street": "1214 Oakleaf Drive",
+        "city": "St. Louis",
+        "state": "MO",
+        "zip": "63119",
+        "type": "Home",
+        "phone": "123-456-7890"
+
+    },
+    {
+        "name": "Luke Thomas",
+        "company": "Paradowski Creative",
+        "street": "349 Marshall Ave #200",
+        "city": "St. Louis",
+        "state": "MO",
+        "zip": "63119",
+        "type": "Work",
+        "phone": "(314) 241-2150"
+    }
+]
