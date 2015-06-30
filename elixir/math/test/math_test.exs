@@ -13,4 +13,18 @@ defmodule MathTest do
     assert Math.fib(  7) == 13
     assert Math.fib(  8) == 21
   end
+
+  test "sum" do
+    assert Math.sum([1,2,3]) == 6
+  end
+
+  test "map" do
+    assert Math.map([1,2,3,4], fn x -> x * x end) == [1,4,9,16]
+    assert Math.map([1,2,3,4], &(&1*&1))          == [1,4,9,16]
+    assert [1,2,3,4]        |> Math.map(&(&1*&1)) == [1,4,9,16]
+  end
+
+  test "transform" do
+    assert [1,2,3,4] |> Math.map(&(&1*&1)) |> Math.sum == 30
+  end
 end
