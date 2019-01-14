@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Chat Example</title>
+<script type="text/javascript">
+window.onload = function () {
+    var conn;
+    var msg = document.getElementById("msg");
+    var log = document.getElementById("log");
+
+    function appendLog(message) {
+        var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+        const p = document.createElement("p")
+        const time = new Date(message.Time).toJSON()
+        p.className = "entry"
+        p.innerHTML = `
+        <span class="meta">
+          <span class="time">${time}</span>
+          <span class="source">${message.Source}</span>
+        </span>
+        <span class="body">${message.Payload}</span>
+        `
+        log.appendChild(p);
+        if (doScroll) {
+            log.scrollTop = log.scrollHeight - log.clientHeight;
+        }
+    }
+
+    document.getElementById("form").onsubmit = function () {
+        if (!conn) {
+            return false;
+        }
+        if (!msg.value) {
+            return false;
+        }
+        conn.send(msg.value);
+        msg.value = "";
+        return false;
+    };
+
+    conn = new WebSocket("ws://" + document.location.host + "/ws");
+    conn.onclose = function (evt) {
+        appendLog({
+            Time: new Date(),
+            Payload: "Connection closed",
+            Source: "server",
+        })
+    };
+
+    conn.onmessage = function (payload) {
+        const message = JSON.parse(payload.data)
+        message.Payload = atob(message.Payload)
+        appendLog(message)
+    };
+};
+</script>
+<style type="text/css">
+html {
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: silver;
+    height: 100vh;
+    margin: 0;
+}
+
+#log {
+    background: white;
+    flex-grow: 1;
+    margin: 10px;
+    overflow: auto;
+    padding: 10px;
+}
+
+#form {
+    overflow: hidden;
+    margin: 10px;
+    margin-top: 0px;
+}
+
+.entry {
+    margin: 2px 0;
+}
+
+.entry .time {
+    opacity: 0.4;
+}
+
+.entry .meta {
+    display: block;
+}
+
+</style>
+</head>
+<body>
+<div id="log"></div>
+<form id="form">
+    <input type="submit" value="Send" />
+    <input type="text" id="msg" size="64"/>
+</form>
+</body>
+</html>

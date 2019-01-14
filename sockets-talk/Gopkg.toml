@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/gorilla/websocket"
+  version = "1.4.0"
+
+[[constraint]]
+  name = "gopkg.in/alexcesaro/statsd.v2"
+  version = "2.0.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true
